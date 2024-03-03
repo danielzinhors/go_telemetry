@@ -31,6 +31,7 @@ func NewGetTempUseCase(ServiceWeatherService services.ServiceWeatherService) Get
 
 func (u *GetTempUseCaseImpl) Execute(ctx context.Context, input *TempInput) (*TempOutput, error) {
 	serviceWeatherResponse, err := u.serviceWeatherService.QueryCep(ctx, input.Cep)
+	println("Opa")
 	if err != nil {
 		return nil, err
 	}

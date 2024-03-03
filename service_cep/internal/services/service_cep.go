@@ -47,12 +47,16 @@ func (s *ServiceWeatherServiceImpl) QueryCep(ctx context.Context, cep string) (*
 	}
 
 	body, err := io.ReadAll(response.Body)
+
 	if err != nil {
 		return nil, err
 	}
 	defer response.Body.Close()
 
 	if response.StatusCode != 200 {
+		if response.StatusCode == 422 {
+			return nil, errors.New("invalid zipcode")
+		}
 		return nil, errors.New("service weather error")
 	}
 

@@ -9,9 +9,9 @@ import (
 	"os/signal"
 	"time"
 
-	handlers "github.com/danielzinhors/go_telemetry/service_cep/internal/handlers"
+	handle "github.com/danielzinhors/go_telemetry/service_cep/internal/handlers"
 	"github.com/danielzinhors/go_telemetry/service_cep/internal/services"
-	usecases "github.com/danielzinhors/go_telemetry/service_cep/internal/usecases"
+	usecase "github.com/danielzinhors/go_telemetry/service_cep/internal/usecases"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
@@ -43,15 +43,15 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Recoverer)
 
-	getTempHandler := handlers.NewGetTempHandler(
-		usecases.NewGetTempUseCase(
+	getTempHandler := handle.NewGetTempHandler(
+		usecase.NewGetTempUseCase(
 			services.NewServiceWeatherService(),
 		),
 	)
 
 	r.Get("/ensolarado", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("OK"))
+		w.Write([]byte("Sem chances de chuva"))
 	})
 
 	r.Post("/", getTempHandler.Handle)
