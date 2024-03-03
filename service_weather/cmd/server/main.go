@@ -9,7 +9,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/danielzinhors/go_telemetry/service_weather/internal/handlers"
+	handle "github.com/danielzinhors/go_telemetry/service_weather/internal/handlers"
 	"github.com/danielzinhors/go_telemetry/service_weather/internal/services"
 	"github.com/danielzinhors/go_telemetry/service_weather/internal/usecases"
 	"github.com/go-chi/chi/middleware"
@@ -43,7 +43,7 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Recoverer)
 
-	getTempHandler := handlers.NewGetTempHandler(
+	getTempHandler := handle.NewGetTempHandler(
 		usecases.NewGetTempUseCase(
 			services.NewViaCepService(),
 			services.NewWeatherApiService(),
