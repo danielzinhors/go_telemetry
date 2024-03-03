@@ -54,8 +54,11 @@ func (s *ServiceWeatherServiceImpl) QueryCep(ctx context.Context, cep string) (*
 	defer response.Body.Close()
 
 	if response.StatusCode != 200 {
-		if response.StatusCode == 422 {
-			return nil, errors.New("invalid zipcode")
+		if response.StatusCode == 404 {
+			return &ServiceWeatherResponse{
+				StatusCode: response.StatusCode,
+				Data:       string(body),
+			}, nil
 		}
 		return nil, errors.New("service weather error")
 	}

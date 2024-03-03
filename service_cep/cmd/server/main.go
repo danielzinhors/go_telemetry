@@ -31,7 +31,7 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
 
-	otelShutdown, err := setupOTelSDK(ctx)
+	otelShutdown, err := getOTelShutdown(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -72,7 +72,8 @@ func main() {
 	err = server.Shutdown(context.Background())
 }
 
-func setupOTelSDK(ctx context.Context) (shutdown func(context.Context) error, err error) {
+func getOTelShutdown(ctx context.Context) (shutdown func(context.Context) error, err error) {
+
 	res, err := resource.New(ctx, resource.WithAttributes(semconv.ServiceName(os.Getenv("OTEL_SERVICE_NAME"))))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create resource: %w", err)

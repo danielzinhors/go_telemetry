@@ -4,7 +4,7 @@ COPY . .
 RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-w -s" -o server_cep cmd/server/main.go
 
 FROM scratch
-COPY --from=builder /app/.env .
+COPY --from=builder /app/cmd/server/.env .
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /app/server_cep .
 CMD ["./server_cep"]
