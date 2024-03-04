@@ -13,6 +13,7 @@ type TempInput struct {
 }
 
 type TempOutput struct {
+	City                  string
 	TemperatureCelsius    float64
 	TemperatureFahrenheit float64
 	TemperatureKelvin     float64
@@ -47,15 +48,16 @@ func (u *GetTempUseCaseImpl) Execute(ctx context.Context, input *TempInput) (*Te
 	if err != nil {
 		return nil, err
 	}
-
+	city := cepResponse.Localidade
 	temperatureCelsius := weatherResponse.Current.TemperatureCelsius
 	temperatureFahrenheit := weatherResponse.Current.TemperatureCelsius*1.8 + 32
 	temperatureKelvin := weatherResponse.Current.TemperatureCelsius + 273.15
 
-	weatherLocation := fmt.Sprintf("%s - %s - %s", weatherResponse.Location.Name, weatherResponse.Location.Region, weatherResponse.Location.Country)
+	weatherLocation := fmt.Sprintf("%s - %s - %s", city, weatherResponse.Location.Region, weatherResponse.Location.Country)
 	fmt.Printf("Temperatura em %s C=%.2f F=%.2f K=%.2f\n", weatherLocation, temperatureCelsius, temperatureFahrenheit, temperatureKelvin)
 
 	return &TempOutput{
+		City:                  city,
 		TemperatureCelsius:    temperatureCelsius,
 		TemperatureFahrenheit: temperatureFahrenheit,
 		TemperatureKelvin:     temperatureKelvin,

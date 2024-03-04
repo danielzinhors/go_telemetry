@@ -13,6 +13,7 @@ import (
 )
 
 type GetTempResponse struct {
+	City                  string  `json:"city"`
 	TemperatureCelsius    float64 `json:"temp_C"`
 	TemperatureFahrenheit float64 `json:"temp_F"`
 	TemperatureKelvin     float64 `json:"temp_K"`
@@ -59,6 +60,7 @@ func (h *GetTempHandler) Handle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := GetTempResponse{
+		City:                  output.City,
 		TemperatureCelsius:    helper.RoundFloat(output.TemperatureCelsius, 1),
 		TemperatureFahrenheit: helper.RoundFloat(output.TemperatureFahrenheit, 1),
 		TemperatureKelvin:     helper.RoundFloat(output.TemperatureKelvin, 1),
